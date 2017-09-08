@@ -1,5 +1,6 @@
 package Engine;
 
+import Input.FileWizard;
 import Input.loadparam;
 import Output.DataWrapper;
 import java.io.*;
@@ -11,9 +12,11 @@ public class Main {
 
 		// LOAD the parameter file.
 
+		String head = FileWizard.getabspath();
+
 		loadparam data;
 		if (args.length == 0){
-			data =  new loadparam("/Users/erinsong/Documents/shadojava/in/params.txt");
+			data =  new loadparam(head + "/in/params.txt");
 		} else {
 			data = new loadparam(args[0]);
 		}

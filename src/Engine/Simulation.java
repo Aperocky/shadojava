@@ -8,10 +8,15 @@ public class Simulation {
 	private loadparam parameters;
 
     private int[] expiredtaskcount;
+
     private int[] completedtaskcount;
+
     private Data[] operatoroutput;
+
     private Data[] dispatchoutput;
+
     private int repnumber;
+
     private int repID;
 
     private Replication[] completesimulation;
@@ -21,6 +26,7 @@ public class Simulation {
     }
 
     public Simulation(loadparam param) {
+
         parameters = param;
         repnumber = param.numReps;
         completesimulation = new Replication[repnumber];

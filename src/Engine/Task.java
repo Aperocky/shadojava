@@ -45,9 +45,7 @@ public class Task implements Comparable<Task> {
 	private int queued;
 
 // Mutators
-public boolean checkexpired() {
-	return expired;
-}
+	public boolean checkexpired() { return expired; }
 
 	public void setexpired() {
 		expired = true;
@@ -83,6 +81,7 @@ public boolean checkexpired() {
 	 ****************************************************************************/
 
 	public Task(int type, double PrevTime, loadparam Param, boolean fromPrev) {
+
 		Type = type;
 		parameters = Param;
 		prevTime = PrevTime;
@@ -106,6 +105,7 @@ public boolean checkexpired() {
 		isLinked = parameters.linked[Type] == 1;
 		elapsedTime = 0;
 		expired = false;
+
 	}
 
 	/****************************************************************************

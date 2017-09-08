@@ -28,8 +28,6 @@ public class ProcData {
 
 	private ArrayList<Task> Dataset;
 
-
-	
 	public ProcData (ArrayList<Task> thisone){
 		Dataset = thisone;
 	}
@@ -53,6 +51,7 @@ public class ProcData {
 		}
 	}
 
+	// trim the tasklist of the expired tasks.
 
 	public void trim(double time) {
 
@@ -85,7 +84,6 @@ public class ProcData {
 
         int i = 1;
 
-
 			for (Task each : Dataset) {
 
                 if (i > (int) (time / 10) + 1) {
@@ -97,7 +95,6 @@ public class ProcData {
                 int endINT = (int) endscale + 1;
 
 				double percBusy = 0;
-
 
 				if (i > endscale) {
 
@@ -121,7 +118,6 @@ public class ProcData {
 					percBusy = each.getSerTime() / 10;
 
 					who.getUtilization().datainc(each.getType(), i - 1, trainID, percBusy);
-
 
 				}
 			}

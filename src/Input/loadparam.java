@@ -111,7 +111,7 @@ public class loadparam {
 		linked = new int[numTaskTypes];
 		trigger = new int[numTaskTypes][];
 
-		//Read in person type and tasks they can do
+		//Read in agent type and tasks they can do
 		
 		for (int i = 0; i< numOps; i++){
 			opNames[i] = readString(in);

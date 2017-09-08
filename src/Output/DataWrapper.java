@@ -1,14 +1,10 @@
 package Output;
 
 import java.io.*;
-import java.util.ArrayList;
 
-import Engine.Dispatch;
-import Engine.Operator;
-import Engine.Simulation;
-import Engine.TrainSim;
+import Engine.*;
+import Input.FileWizard;
 import Input.loadparam;
-import Engine.Replication;
 
 /***************************************************************************
  *
@@ -30,11 +26,15 @@ public class DataWrapper {
 
     private Simulation where;
 
-
     private Replication what;
 
-
     private String file_name;
+
+    private String file_head;
+
+    public void setFileHead(){
+        file_head = FileWizard.getabspath();
+    }
 
     public DataWrapper(Simulation o, loadparam param) {
         parameter = param;
@@ -43,6 +43,8 @@ public class DataWrapper {
 
 
     public void generate() throws IOException {
+
+        setFileHead();
 
         for (int i = 0; i < where.getCompletesimulation().length; i++) {
 
@@ -79,14 +81,14 @@ public class DataWrapper {
     public void output() throws IOException {
 
         for (int i = 0; i < parameter.numDispatch; i++) {
-            file_name = "/Users/erinsong/Documents/shadojava/out/" + "Dispatcher" + i + ".csv";
+            file_name = file_head + "/out/" + "Dispatcher" + i + ".csv";
             System.setOut(new PrintStream(new BufferedOutputStream(
                     new FileOutputStream(file_name, true)), true));
             where.getDispatchoutput(i).outputdata();
         }
 
         for (int j = 0; j < parameter.numOps; j++) {
-            file_name = "/Users/erinsong/Documents/shadojava/out/" + parameter.opNames[j] + ".csv";
+            file_name = file_head + "/out/" + parameter.opNames[j] + ".csv";
             System.setOut(new PrintStream(new BufferedOutputStream(
                     new FileOutputStream(file_name, true)), true));
             where.getOperatoroutput(j).outputdata();
@@ -94,7 +96,7 @@ public class DataWrapper {
         }
 
         for (int k = 0; k < parameter.numTaskTypes; k++) {
-            file_name = "/Users/erinsong/Documents/shadojava/out/" + "expiredtask" + ".csv";
+            file_name = file_head + "/out/" + "expiredtask" + ".csv";
             System.setOut(new PrintStream(new BufferedOutputStream(
                     new FileOutputStream(file_name, true)), true));
 

@@ -1,4 +1,4 @@
-package Engine;
+package Input;
 
 import java.io.File;
 
@@ -11,13 +11,6 @@ public class FileWizard {
         File currentDir = new File("");
         String dirpath = currentDir.getAbsolutePath();
         return dirpath;
-
-    }
-
-    public static void main(String[] args){
-
-        Engine.FileWizard nv = new Engine.FileWizard();
-        nv.getabspath();
 
     }
 }

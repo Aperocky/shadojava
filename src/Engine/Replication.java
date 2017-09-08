@@ -47,10 +47,12 @@ public class Replication {
 
 
     public Replication(loadparam param) {
+
         parameters = param;
         totaltime = parameters.numHours * 60;
         repnumber = parameters.numReps;
         repID = 0;
+
     }
 
     public void run() {
