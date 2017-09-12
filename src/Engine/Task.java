@@ -47,6 +47,8 @@ public class Task implements Comparable<Task> {
 // Mutators
 	public boolean checkexpired() { return expired; }
 
+	public void setArrTime(double time) { arrTime = time;}
+
 	public void setexpired() {
 		expired = true;
 	}

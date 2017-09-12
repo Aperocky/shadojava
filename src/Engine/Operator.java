@@ -50,7 +50,6 @@ public class Operator {
 	}
 
 
-
 	/*public Data getExpiredtask() {
 		return this.expiredtask;
 	}
@@ -61,7 +60,7 @@ public class Operator {
 
 	public Data getTaskout() {
 		return this.taskout;
-	}/*
+	}*/
 
 	// Mutator
 

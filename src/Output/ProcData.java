@@ -32,11 +32,13 @@ public class ProcData {
 		Dataset = thisone;
 	}
 
-	public void store(double time, Operator you, int trainID, Simulation o, int repID) {
-		countExpired(o);
+	// Wrapper.
+
+	public void store(double time, Operator ops, int trainID, Simulation sim, int repID) {
+		countExpired(sim);
 		trim(time);
-		outpututilization(you, time, trainID);
-		output(you, o, repID);
+		outpututilization(ops, time, trainID);
+		output(ops, sim, repID);
 
 	}
 
@@ -80,7 +82,9 @@ public class ProcData {
 		
 	}
 
-	public void outpututilization(Operator who, double time, int trainID) {
+	// Put operator's task into 10 minute packs.
+
+	public void outpututilization(Operator operator, double time, int trainID) {
 
         int i = 1;
 
@@ -100,16 +104,16 @@ public class ProcData {
 
 						percBusy = each.getSerTime() / 10;
 
-						who.getUtilization().datainc(each.getType(), i - 1, trainID, percBusy);
+						operator.getUtilization().datainc(each.getType(), i - 1, trainID, percBusy);
 
 
 				} else {
 
                     if (i > beginscale) {
                         percBusy = i - beginscale;
-                        who.getUtilization().datainc(each.getType(), i - 1, trainID, percBusy);
+                        operator.getUtilization().datainc(each.getType(), i - 1, trainID, percBusy);
 						percBusy = endscale - i;
-						who.getUtilization().datainc(each.getType(), i, trainID, percBusy);
+						operator.getUtilization().datainc(each.getType(), i, trainID, percBusy);
 
                     }
 
@@ -117,34 +121,35 @@ public class ProcData {
 
 					percBusy = each.getSerTime() / 10;
 
-					who.getUtilization().datainc(each.getType(), i - 1, trainID, percBusy);
+					operator.getUtilization().datainc(each.getType(), i - 1, trainID, percBusy);
 
 				}
 			}
 
 
-		who.getUtilization().avgdata();
+		operator.getUtilization().avgdata();
 
 		// was in the process of debugging
-		/*for (int x = 0; x < who.getUtilization().avg.length; x++) {
-			for (int y = 0; y < who.getUtilization().avg[x].length; y++) {
-				who.getOutput().datainc(x, y, i, who.getUtilization().avgget(x, y));
+		/*for (int x = 0; x < operator.getUtilization().avg.length; x++) {
+			for (int y = 0; y < operator.getUtilization().avg[x].length; y++) {
+				operator.getOutput().datainc(x, y, i, operator.getUtilization().avgget(x, y));
 			}
 		}*/
 
 	}
 
-	public void output(Operator who, Simulation o, int rep) {
+
+	public void output(Operator operator, Simulation o, int rep) {
 		Data data;
-		if (who.name.contains("Dispatcher")) {
-			data = o.getDispatchoutput(who.dpID);
+		if (operator.name.contains("Dispatcher")) {
+			data = o.getDispatchoutput(operator.dpID);
 		} else {
-			data = o.getOperatoroutput(who.opId);
+			data = o.getOperatoroutput(operator.opId);
 		}
 
-		for (int x = 0; x < who.getUtilization().avg.length; x++) {
-			for (int y = 0; y < who.getUtilization().avg[x].length; y++) {
-				data.datainc(x, y, rep, who.getUtilization().avgget(x, y));
+		for (int x = 0; x < operator.getUtilization().avg.length; x++) {
+			for (int y = 0; y < operator.getUtilization().avg[x].length; y++) {
+				data.datainc(x, y, rep, operator.getUtilization().avgget(x, y));
 
 			}
 		}
@@ -153,7 +158,7 @@ public class ProcData {
 
 
 
-		/*for (double[] x : who.getOutput().avg) {
+		/*for (double[] x : operator.getOutput().avg) {
 			for (double y : x) {
 
 				System.out.print(y + ",");

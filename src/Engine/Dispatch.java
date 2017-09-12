@@ -4,7 +4,7 @@ import Input.loadparam;
 
 /***************************************************************************
  * 
- * 	FILE: 			Task.java
+ * 	FILE: 			Dispatch.java
  * 
  * 	AUTHOR:			ROCKY LI
  * 	
@@ -33,6 +33,8 @@ public class Dispatch {
 	private ArrayList<Task> proctasks;
 
 	private ArrayList<Task> totrain;
+
+	// Constructor is HERE
 
 	public Dispatch(loadparam Param) {
 		parameters = Param;
@@ -69,7 +71,7 @@ public class Dispatch {
 
 		linkedtasks = new ArrayList<Task>();
 
-		// Discreet Tasks owned by the Dispatcher:
+		// Discrete Tasks owned by the Dispatcher:
 
 		for (int la : parameters.DispatchTasks) {
 

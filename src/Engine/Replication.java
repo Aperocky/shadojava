@@ -11,11 +11,10 @@ import java.util.ArrayList;
 /**
  * Created by erinsong on 6/29/17.
  */
+
 public class Replication {
 
-    private loadparam parameters;
-
-    private int repnumber;
+    public loadparam parameters;
 
     private int repID;
 
@@ -45,13 +44,11 @@ public class Replication {
         return totaltime;
     }
 
-
-    public Replication(loadparam param) {
+    public Replication(loadparam param, int id) {
 
         parameters = param;
         totaltime = parameters.numHours * 60;
-        repnumber = parameters.numReps;
-        repID = 0;
+        this.repID = id;
 
     }
 
@@ -79,7 +76,13 @@ public class Replication {
         for (Task each : linked) {
 
             int trainid = each.getTrain();
-            trains[trainid].linktask(each);
+            each = new Task(each.getType(), each.getBeginTime(), parameters, false);
+            each.setID(trainid);
+//            each.setArrTime(each.getBeginTime());
+//            each.setELStime(0);
+            if (each.getArrTime() < parameters.numHours*60) {
+                trains[trainid].linktask(each);
+            }
 
         }
 

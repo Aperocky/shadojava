@@ -32,11 +32,11 @@ public class TrainSim {
 
     public ArrayList<Task> tasktime;
 
+    // Inspectors
+
     public int getTrainID() {
         return trainID;
     }
-
-    // Inspectors
 
     public double getTotalTime() {
         return parameters.numHours * 60;
@@ -128,18 +128,18 @@ public class TrainSim {
         Collections.sort(tasktime, (o1, o2) -> Double.compare(o1.getArrTime(), o2.getArrTime()));
     }
 
-    public void addTriggered() {
-
-        for (Task each : tasktime) {
-            int i = each.getType();
-
-            if (parameters.trigger[i][0] != -1) {
-                for (Integer that : parameters.trigger[i]) {
-                    tasktime.add(new Task(that, each.getArrTime(), parameters, false));
-                }
-            }
-        }
-    }
+//    public void addTriggered() {
+//
+//        for (Task each : tasktime) {
+//            int i = each.getType();
+//
+//            if (parameters.trigger[i][0] != -1) {
+//                for (Integer that : parameters.trigger[i]) {
+//                    tasktime.add(new Task(that, each.getArrTime(), parameters, false));
+//                }
+//            }
+//        }
+//    }
 
     /****************************************************************************
      *
@@ -234,7 +234,7 @@ public class TrainSim {
 
     public void run() {
 
-        addTriggered();
+//        addTriggered();
 
         sortTask();
 

@@ -1,8 +1,8 @@
 output_path		/Users/erinsong/Documents/shadojava/out
-num_hours		8
+num_hours	    2
 traff_levels   	m h h h l l l m
 num_reps		10
-num_train		1
+num_train		5
 num_ops			4
 num_dispatch		1
 dispatch_task		0 2 4

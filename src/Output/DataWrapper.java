@@ -24,9 +24,7 @@ public class DataWrapper {
 
     public loadparam parameter;
 
-    private Simulation where;
-
-    private Replication what;
+    private Simulation sim;
 
     private String file_name;
 
@@ -38,7 +36,7 @@ public class DataWrapper {
 
     public DataWrapper(Simulation o, loadparam param) {
         parameter = param;
-        where = o;
+        sim = o;
     }
 
 
@@ -46,18 +44,17 @@ public class DataWrapper {
 
         setFileHead();
 
-        for (int i = 0; i < where.getCompletesimulation().length; i++) {
+        for (int i = 0; i < sim.getCompletesimulation().length; i++) {
 
-            what = where.getCompletesimulation()[i];
+            Replication replication = sim.getCompletesimulation()[i];
 
-            Dispatch dispatch = what.getDispatch();
-            Operator[] dispatchers = dispatch.getDispatch();
+            Operator[] dispatchers = replication.getDispatch().getDispatch();
 
-            for (TrainSim each : what.getTrains()) {
-                for (Operator such : dispatchers) {
+            for (TrainSim each : replication.getTrains()) {
+                for (Operator dispatcher : dispatchers) {
 
-                    new ProcData(such.getQueue().records()).store(where.getCompletesimulation()[i].getTime(), such,
-                            each.getTrainID(), where, i);
+                    new ProcData(dispatcher.getQueue().records()).store(sim.getCompletesimulation()[i].getTime(), dispatcher,
+                            each.getTrainID(), sim, i);
 
                 }
 
@@ -67,15 +64,13 @@ public class DataWrapper {
                 for (Operator him : operators) {
 
 
-                    new ProcData(him.getQueue().records()).store(where.getCompletesimulation()[i].getTime(), him,
-                            each.getTrainID(), where, i);
+                    new ProcData(him.getQueue().records()).store(sim.getCompletesimulation()[i].getTime(), him,
+                            each.getTrainID(), sim, i);
 
 
                 }
             }
-
         }
-
     }
 
     public void output() throws IOException {
@@ -83,25 +78,25 @@ public class DataWrapper {
         for (int i = 0; i < parameter.numDispatch; i++) {
             file_name = file_head + "/out/" + "Dispatcher" + i + ".csv";
             System.setOut(new PrintStream(new BufferedOutputStream(
-                    new FileOutputStream(file_name, true)), true));
-            where.getDispatchoutput(i).outputdata();
+                    new FileOutputStream(file_name, false)), true));
+            sim.getDispatchoutput(i).outputdata();
         }
 
         for (int j = 0; j < parameter.numOps; j++) {
             file_name = file_head + "/out/" + parameter.opNames[j] + ".csv";
             System.setOut(new PrintStream(new BufferedOutputStream(
-                    new FileOutputStream(file_name, true)), true));
-            where.getOperatoroutput(j).outputdata();
+                    new FileOutputStream(file_name, false)), true));
+            sim.getOperatoroutput(j).outputdata();
 
         }
 
         for (int k = 0; k < parameter.numTaskTypes; k++) {
             file_name = file_head + "/out/" + "expiredtask" + ".csv";
             System.setOut(new PrintStream(new BufferedOutputStream(
-                    new FileOutputStream(file_name, true)), true));
+                    new FileOutputStream(file_name, false)), true));
 
-            System.out.println("expired" + where.getExpiredtask()[k]);
-            System.out.println("completed" + where.getCompletedtaskcount()[k]);
+            System.out.println("expired" + sim.getExpiredtask()[k]);
+            System.out.println("completed" + sim.getCompletedtaskcount()[k]);
 
         }
     }

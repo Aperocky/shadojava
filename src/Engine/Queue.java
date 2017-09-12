@@ -226,6 +226,7 @@ public class Queue implements Comparable<Queue>{
         else {
             Task onhand = taskqueue.peek();
             finTime = onhand.getBeginTime() + onhand.getSerTime() - onhand.getELSTime();
+            System.out.println(onhand.getSerTime() + "\t" + onhand.getName() + "\t" + onhand.getBeginTime() + "\t" + onhand.getEndTime());
         }
     }
 

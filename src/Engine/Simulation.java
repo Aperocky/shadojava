@@ -17,30 +17,12 @@ public class Simulation {
 
     private int repnumber;
 
-    private int repID;
-
     private Replication[] completesimulation;
+
+    /* Marked for deletion */
 
     public Replication[] getCompletesimulation() {
         return completesimulation;
-    }
-
-    public Simulation(loadparam param) {
-
-        parameters = param;
-        repnumber = param.numReps;
-        completesimulation = new Replication[repnumber];
-        operatoroutput = new Data[param.numOps];
-        for (int i = 0; i < param.numOps; i++) {
-            operatoroutput[i] = new Data(param.numTaskTypes, (int) param.numHours * 6, param.numReps);
-        }
-
-        dispatchoutput = new Data[param.numDispatch];
-        for (int i = 0; i < param.numDispatch; i++) {
-            dispatchoutput[i] = new Data(param.numTaskTypes, (int) param.numHours * 6, param.numReps);
-        }
-        expiredtaskcount = new int[param.numTaskTypes];
-        completedtaskcount = new int[param.numTaskTypes];
     }
 
     public int[] getExpiredtask() {
@@ -67,10 +49,32 @@ public class Simulation {
         return dispatchoutput[i];
     }
 
+    public Data[] getopsdata() { return operatoroutput; }
+
+    public Data[] getdisdata() { return dispatchoutput; }
+
+    public Simulation(loadparam param) {
+
+        parameters = param;
+        repnumber = param.numReps;
+        completesimulation = new Replication[repnumber];
+        operatoroutput = new Data[param.numOps];
+        for (int i = 0; i < param.numOps; i++) {
+            operatoroutput[i] = new Data(param.numTaskTypes, (int) param.numHours * 6, param.numReps);
+        }
+
+        dispatchoutput = new Data[param.numDispatch];
+        for (int i = 0; i < param.numDispatch; i++) {
+            dispatchoutput[i] = new Data(param.numTaskTypes, (int) param.numHours * 6, param.numReps);
+        }
+        expiredtaskcount = new int[param.numTaskTypes];
+        completedtaskcount = new int[param.numTaskTypes];
+    }
+
     public void run() {
         for (int i = 0; i < repnumber; i++) {
-            repID = i;
-            completesimulation[i] = new Replication(parameters);
+            int repID = i;
+            completesimulation[i] = new Replication(parameters, repID);
             completesimulation[i].run();
         }
     }
