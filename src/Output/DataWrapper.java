@@ -1,65 +1,84 @@
 package Output;
-import java.util.ArrayList;
 
-import Engine.Dispatch;
-import Engine.Operator;
-import Engine.Simulation;
-import Engine.TrainSim;
+import java.io.*;
+
+import Engine.*;
+import Input.FileWizard;
+import Input.loadparam;
 
 /***************************************************************************
- * 
+ *
  * 	FILE: 			DataWrapper.java
- * 
+ *
  * 	AUTHOR: 		ROCKY LI
- * 	
+ *
  * 	DATE:			2017/6/5
- * 
+ *
  * 	VER: 			1.0
- * 
+ *
  * 	Purpose: 		Wrapping the data field for analysis.
- * 
+ *
  **************************************************************************/
 
 public class DataWrapper {
-	
-	private Simulation once;
-	
-	private Dispatch here;
-	
-	private TrainSim[] there;
-	
-	public DataWrapper(Simulation o){
-		once = o;
-	}
-	
-	public void read(){
-		
-		here = once.getDispatch();
-		there = once.getTrains();
-		
-	}
-	
-	public void generate(){
-		
-		System.out.println("here are the Dispatchers");
-		Operator[] dispatchers = here.getDispatch();
-		for (Operator each: dispatchers){
-			new ProcData(each.getQueue().records()).run(once.getTime());
-		}
-		
-		for (TrainSim each: there){
-			
-			System.out.println("for train " + each.trainID);
-			Operator[] operators = each.operators;
-			for (Operator him: operators){
-				new ProcData(him.getQueue().records()).run(once.getTime());
-			}
-		}
-		
-	}
-	
-	public void generatecsv(){
-		
-	}
 
-}
+    public loadparam parameter;
+
+    private Simulation sim;
+
+    private String file_head;
+
+    public void setFileHead(){
+        file_head = FileWizard.getabspath();
+    }
+
+    public DataWrapper(Simulation o, loadparam param) {
+        parameter = param;
+        sim = o;
+    }
+
+    /****************************************************************************
+     *
+     *	Method:     output
+     *
+     *	Purpose:    Generate csv files
+     *
+     ****************************************************************************/
+
+    public void output() throws IOException {
+
+        setFileHead();
+
+        // Dispatch & Engineer timetables
+
+        for (int i = 0; i < parameter.numDispatch; i++) {
+            String file_name = file_head + "/out/" + "Dispatcher" + i + ".csv";
+            System.setOut(new PrintStream(new BufferedOutputStream(
+                    new FileOutputStream(file_name, false)), true));
+            sim.getDispatchoutput(i).outputdata();
+        }
+
+        for (int j = 0; j < parameter.numOps; j++) {
+            String file_name = file_head + "/out/" + parameter.opNames[j] + ".csv";
+            System.setOut(new PrintStream(new BufferedOutputStream(
+                    new FileOutputStream(file_name, false)), true));
+            sim.getOperatoroutput(j).outputdata();
+
+        }
+
+        // Expired Tasks
+
+        String file_name = file_head + "/out/" + "expiredtask_" + ".csv";
+        System.setOut(new PrintStream(new BufferedOutputStream(
+                new FileOutputStream(file_name, false)), true));
+        for (int i = 0; i < parameter.numTaskTypes; i++) {
+            System.out.println("Task name: " + parameter.taskNames[i]);
+            System.out.println("expired: " + sim.getExpiredtask()[i]);
+            System.out.println("completed: " + sim.getCompletedtaskcount()[i]);
+
+        }
+    }
+
+    }
+
+
