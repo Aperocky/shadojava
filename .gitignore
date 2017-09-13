@@ -2,5 +2,4 @@ bin/
 *.iml
 .idea/
 .settings/
-out/
-in/note.txt
+src/Engine/Main.java

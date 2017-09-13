@@ -30,9 +30,9 @@ public class loadparam {
     public int numTrains;
     public int numDispatch;
     public int[] DispatchTasks;
-        
+
     // Operator settings
-        
+
     public int numOps;
 	public String[] opNames;
 	public int[][] opTasks;
@@ -52,7 +52,7 @@ public class loadparam {
 	public int[][] affByTraff;
 	public int[][] opNums;
 	public int[][] trigger;
-	
+
 	// Adding isLinked
 	
 	public int[] linked;
@@ -110,8 +110,8 @@ public class loadparam {
 		ops = new int[numOps];
 		linked = new int[numTaskTypes];
 		trigger = new int[numTaskTypes][];
-		
-		//Read in person type and tasks they can do
+
+		//Read in agent type and tasks they can do
 		
 		for (int i = 0; i< numOps; i++){
 			opNames[i] = readString(in);
@@ -135,7 +135,7 @@ public class loadparam {
 			affByTraff[i] = readIntArr(in);
 			linked[i] = readInt(in);
 			trigger[i] = readIntArr(in);
-			
+
 		}
 		
 		for (int i = 0; i < numTaskTypes; i++){
