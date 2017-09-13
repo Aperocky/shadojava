@@ -9,9 +9,10 @@ import java.util.*;
  *
  * 	DATE:			2017/6/5
  *
- * 	VER: 			1.0
+ * 	VER: 			1.1
  *
- * 	Purpose: 		Queue up each of the workers.
+ * 	Purpose: 		Queue up each of the workers, and order tasks according
+ * 	                to their priority and arrival time.
  *
  **************************************************************************/
 
@@ -24,9 +25,6 @@ public class Queue implements Comparable<Queue>{
     // Operator ID.
 
     public Operator operator;
-
-    public int opId;
-
 
     // Set the time to move forward with general time. (Tracer variable)
 
@@ -66,10 +64,6 @@ public class Queue implements Comparable<Queue>{
         return isBusy;
     }
 
-    private int timeint() {
-        return (int) time / 10;
-    }
-
     // Mutator:
 
     public void SetTime(double Time) {
@@ -105,8 +99,6 @@ public class Queue implements Comparable<Queue>{
 
     public void add(Task task) {
 
-        // Stash tasks that are in the present
-
         // Set the time of the queue to the arrival time of the task.
 
         SetTime(task.getArrTime());
@@ -116,12 +108,6 @@ public class Queue implements Comparable<Queue>{
             }
         }
         taskqueue.add(task);
-
-        // work added update of tasks in!!
-
-
-        //operator.getTaskin().datainc(task.getType(), timeint(), trainId, 1);
-
 
         // If the task is processed as first priority, i.e. began immediately, then:
 
@@ -169,25 +155,21 @@ public class Queue implements Comparable<Queue>{
         }
 
         // If there are ANOTHER task in the queue following the completion of this one:
+
         while (taskqueue.peek() != null) {
+
             if (taskqueue.peek().getExpTime() > time) {
                 break;
             }
+
+            // Add expired tasks to the record
+
             taskqueue.peek().setexpired();
             recordtasks.add(taskqueue.poll());
-            //taskqueue.poll(); // <- expired task removal ** increment the number of expired tasks here
 
         }
 
         if (taskqueue.peek() != null) {
-
-            // before beginning a new task using the current time I will want to update utilization
-
-            //updateUtil(taskqueue.peek().getBeginTime(), taskqueue.peek().getType(),
-            //trainId, time);
-
-            // increment the work done
-            //operator.getTaskout().datainc(taskqueue.peek().getType(), timeint(), trainId, 1);
 
             // Set the beginTime of the Task in question to now, i.e. begin working on this task.
 
@@ -213,7 +195,7 @@ public class Queue implements Comparable<Queue>{
      *
      ****************************************************************************/
 
-    public void finTime() {
+    private void finTime() {
 
         // If there is no current task, the finTime will be infinite.
 
@@ -226,7 +208,12 @@ public class Queue implements Comparable<Queue>{
         else {
             Task onhand = taskqueue.peek();
             finTime = onhand.getBeginTime() + onhand.getSerTime() - onhand.getELSTime();
-            System.out.println(onhand.getSerTime() + "\t" + onhand.getName() + "\t" + onhand.getBeginTime() + "\t" + onhand.getEndTime());
+
+            // Error checker
+
+//            System.out.println(onhand.getArrTime() + "\t" + onhand.getName() + "\t" +
+//            onhand.getBeginTime() + "\t" + onhand.getEndTime());
+
         }
     }
 
@@ -240,6 +227,7 @@ public class Queue implements Comparable<Queue>{
      ****************************************************************************/
 
     private void numtask() {
+
         NumTask = taskqueue.size();
         if (NumTask == 0) {
             isBusy = false;

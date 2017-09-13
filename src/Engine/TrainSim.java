@@ -97,7 +97,13 @@ public class TrainSim {
 
             // Start a new task with PrevTime = 0
 
-            Task origin = new Task(i, 0, parameters, true);
+            Task origin;
+
+            if (parameters.arrPms[i][0] == 0){
+                origin = new Task (i, 30 + Math.random(), parameters, false);
+            } else {
+                origin = new Task(i, 0, parameters, true);
+            }
 
             if (origin.linked()) {
                 continue;
@@ -128,18 +134,18 @@ public class TrainSim {
         Collections.sort(tasktime, (o1, o2) -> Double.compare(o1.getArrTime(), o2.getArrTime()));
     }
 
-//    public void addTriggered() {
-//
-//        for (Task each : tasktime) {
-//            int i = each.getType();
-//
-//            if (parameters.trigger[i][0] != -1) {
-//                for (Integer that : parameters.trigger[i]) {
-//                    tasktime.add(new Task(that, each.getArrTime(), parameters, false));
-//                }
-//            }
-//        }
-//    }
+    public void addTriggered() {
+
+        for (Task each : tasktime) {
+            int i = each.getType();
+
+            if (parameters.trigger[i][0] != -1) {
+                for (Integer that : parameters.trigger[i]) {
+                    tasktime.add(new Task(that, each.getArrTime(), parameters, false));
+                }
+            }
+        }
+    }
 
     /****************************************************************************
      *

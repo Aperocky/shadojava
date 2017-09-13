@@ -44,6 +44,16 @@ public class ProcRep {
 
     private Data[] repopsdata;
 
+    private int[] completed;
+
+    private int[] expired;
+
+    // INSPECTORS
+
+    public int[] getExpired() { return expired; }
+
+    public int[] getCompleted() { return completed; }
+
     /****************************************************************************
      *
      *	Main Object:	ProcRep
@@ -64,6 +74,9 @@ public class ProcRep {
         numoperator = rep.parameters.numOps;
         numtasktypes = rep.parameters.numTaskTypes;
         hours = rep.parameters.numHours;
+        expired = new int[numtasktypes];
+        completed = new int[numtasktypes];
+
 
     }
 
@@ -81,6 +94,7 @@ public class ProcRep {
         for (int i = 0; i < numdispatch; i++){
             repdisdata[i] = new Data(numtasktypes,(int) hours*6, 1);
         }
+
         repopsdata = new Data[numoperator];
         for (int i = 0; i < numoperator; i++){
             repopsdata[i] = new Data(numtasktypes, (int) hours*6, trains.length);
@@ -104,6 +118,13 @@ public class ProcRep {
         // Cycle through records of each operator in 10 minutes intervals.
 
         for (Task each: records){
+
+            if (each.checkexpired()){
+                expired[each.getType()]++;
+                continue;
+            } else {
+                completed[each.getType()]++;
+            }
 
             double beginscale = (each.getEndTime() - each.getSerTime()) / 10;
             double endscale = each.getEndTime() / 10;
@@ -239,7 +260,7 @@ public class ProcRep {
         tmpData();
         fillRepData();
         appendData();
-        testProcRep();
+//        testProcRep();
 
     }
 

@@ -8,9 +8,20 @@ import Input.loadparam;
 
 import java.util.ArrayList;
 
-/**
- * Created by erinsong on 6/29/17.
- */
+/***************************************************************************
+ *
+ * 	FILE: 			Replication.java
+ *
+ * 	AUTHOR: 		Erin Song
+ *
+ * 	DATE:			2017/6/22
+ *
+ * 	VER: 			1.1
+ *
+ * 	Purpose: 		A wrapper that execute each replication.
+ * 	                Styling and code streamlining are added by Rocky.
+ *
+ **************************************************************************/
 
 public class Replication {
 
@@ -23,8 +34,6 @@ public class Replication {
     private TrainSim[] trains;
 
     private Dispatch control;
-
-    private double totaltime;
 
     // Inspectors:
 
@@ -40,17 +49,28 @@ public class Replication {
         return repID;
     }
 
-    public double getTime() {
-        return totaltime;
-    }
+    /****************************************************************************
+     *
+     *	Main Object:    Replication
+     *
+     *	Purpose:		The object that contains a simulation run and all its data.
+     *
+     ****************************************************************************/
 
     public Replication(loadparam param, int id) {
 
         parameters = param;
-        totaltime = parameters.numHours * 60;
         this.repID = id;
 
     }
+
+    /****************************************************************************
+     *
+     *	Method:		run
+     *
+     *	Purpose:	Run the simulation once given parameter.
+     *
+     ****************************************************************************/
 
     public void run() {
 
@@ -78,12 +98,9 @@ public class Replication {
             int trainid = each.getTrain();
             each = new Task(each.getType(), each.getBeginTime(), parameters, false);
             each.setID(trainid);
-//            each.setArrTime(each.getBeginTime());
-//            each.setELStime(0);
             if (each.getArrTime() < parameters.numHours*60) {
                 trains[trainid].linktask(each);
             }
-
         }
 
         // Run each train

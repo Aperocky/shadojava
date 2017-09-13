@@ -24,8 +24,6 @@ public class Dispatch {
 
 	private ArrayList<Task> linkedtasks;
 
-	private ArrayList<Task> dispatchrecords;
-
 	private Operator[] dispatchers;
 
 	private int[] linked;
@@ -80,6 +78,8 @@ public class Dispatch {
 			ArrayList<Task> indlist = new ArrayList<Task>();
 
 			// Start a new task with PrevTime = 0
+
+
 
 			Task origin = new Task(la, 0, parameters, true);
 
@@ -164,9 +164,7 @@ public class Dispatch {
 
 		for (int i = 0; i < parameters.numDispatch; i++) {
 
-			dispatchers[i] = new Operator(i, parameters.DispatchTasks,
-					parameters.numHours, parameters.numTrains,
-					parameters.numTaskTypes, parameters.numReps);
+			dispatchers[i] = new Operator(i, parameters.DispatchTasks);
 		}
 	}
 
@@ -188,7 +186,7 @@ public class Dispatch {
 			proctasks.addAll(dispatcher.getQueue().records());
 		}
 		for (Task each : proctasks) {
-			if (each.checkexpired() == false) {
+			if (!each.checkexpired()) {
 				if (each.linked()) {
 					totrain.add(each);
 				}

@@ -8,10 +8,25 @@ import Output.ProcRep;
 
 import java.io.*;
 
+
+/***************************************************************************
+ *
+ * 	FILE: 			Main.java
+ *
+ * 	AUTHOR: 		ROCKY LI
+ *
+ * 	LATEST_EDIT:	2017/9/12
+ *
+ * 	VER: 			1.2
+ *
+ * 	Purpose: 		Entry point.
+ *
+ **************************************************************************/
+
+
 public class Main {
 
 	public static void main(String[] args) throws IOException {
-
 
 		// LOAD the parameter file.
 
@@ -24,19 +39,14 @@ public class Main {
 			data = new loadparam(args[0]);
 		}
 
-		// Runs simulation.
+		// Runs simulation
 
-		Simulation once = new Simulation(data);
-		once.run();
+		Simulation sim = new Simulation(data);
+		sim.run();
 
-//		OutputTest nv = new OutputTest(once.getCompletesimulation()[0]);
-//		nv.textinspect();
+		// Generate Output
 
-		ProcRep rep = new ProcRep(once.getdisdata(), once.getopsdata(), once.getCompletesimulation()[0]);
-		rep.run();
-
-		DataWrapper analyze = new DataWrapper(once, data);
-		analyze.generate();
+		DataWrapper analyze = new DataWrapper(sim, data);
 		analyze.output();
 
 	}
