@@ -29,7 +29,8 @@ public class DataWrapper {
     private String file_head;
 
     public void setFileHead(){
-        file_head = FileWizard.getabspath();
+//        file_head = FileWizard.getabspath()+ "/out/";
+        file_head = parameter.outputPath;
     }
 
     public DataWrapper(Simulation o, loadparam param) {
@@ -51,34 +52,30 @@ public class DataWrapper {
 
         // Dispatch & Engineer timetables
 
-        for (int i = 0; i < parameter.numDispatch; i++) {
-            String file_name = file_head + "/out/" + "Dispatcher" + i + ".csv";
-            System.setOut(new PrintStream(new BufferedOutputStream(
-                    new FileOutputStream(file_name, false)), true));
-            sim.getDispatchoutput(i).outputdata();
-        }
+        String file_nam = file_head + "dispatcher" + ".csv";
+        System.setOut(new PrintStream(new BufferedOutputStream(
+                new FileOutputStream(file_nam, false)), true));
+        sim.getDispatchoutput().outputdata();
+
 
         for (int j = 0; j < parameter.numOps; j++) {
-            String file_name = file_head + "/out/" + parameter.opNames[j] + ".csv";
+            String file_name = file_head + parameter.opNames[j] + ".csv";
             System.setOut(new PrintStream(new BufferedOutputStream(
                     new FileOutputStream(file_name, false)), true));
             sim.getOperatoroutput(j).outputdata();
-
         }
 
         // Expired Tasks
 
-        String file_name = file_head + "/out/" + "expiredtask_" + ".csv";
+        String file_name = file_head + "expiredtask_" + ".csv";
         System.setOut(new PrintStream(new BufferedOutputStream(
                 new FileOutputStream(file_name, false)), true));
         for (int i = 0; i < parameter.numTaskTypes; i++) {
             System.out.println("Task name: " + parameter.taskNames[i]);
             System.out.println("expired: " + sim.getExpiredtask()[i]);
             System.out.println("completed: " + sim.getCompletedtaskcount()[i]);
-
         }
     }
-
-    }
+}
 
 

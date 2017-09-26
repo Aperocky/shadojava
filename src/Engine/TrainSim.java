@@ -100,7 +100,7 @@ public class TrainSim {
             Task origin;
 
             if (parameters.arrPms[i][0] == 0){
-                origin = new Task (i, 30 + Math.random(), parameters, false);
+                origin = new Task (i, 30 + Math.random(), parameters, true);
             } else {
                 origin = new Task(i, 0, parameters, true);
             }

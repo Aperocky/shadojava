@@ -29,7 +29,7 @@ public class Simulation {
 
     private Data[] operatoroutput;
 
-    private Data[] dispatchoutput;
+    private Data dispatchoutput;
 
     private int repnumber;
 
@@ -45,13 +45,13 @@ public class Simulation {
         return operatoroutput[i];
     }
 
-    public Data getDispatchoutput(int i) {
-        return dispatchoutput[i];
+    public Data getDispatchoutput() {
+        return dispatchoutput;
     }
 
     public Data[] getopsdata() { return operatoroutput; }
 
-    public Data[] getdisdata() { return dispatchoutput; }
+    public Data getdisdata() { return dispatchoutput; }
 
     /****************************************************************************
      *
@@ -72,13 +72,13 @@ public class Simulation {
 
         operatoroutput = new Data[param.numOps];
         for (int i = 0; i < param.numOps; i++) {
-            operatoroutput[i] = new Data(param.numTaskTypes, (int) param.numHours * 6, param.numReps);
+            operatoroutput[i] = new Data(param.numTaskTypes + 1, (int) param.numHours * 6, param.numReps);
         }
 
-        dispatchoutput = new Data[param.numDispatch];
-        for (int i = 0; i < param.numDispatch; i++) {
-            dispatchoutput[i] = new Data(param.numTaskTypes, (int) param.numHours * 6, param.numReps);
-        }
+        dispatchoutput = new Data(param.numTaskTypes + 1, (int) param.numHours * 6, param.numReps);
+//        for (int i = 0; i < param.numDispatch; i++) {
+//            dispatchoutput[i] = new Data(param.numTaskTypes + 1, (int) param.numHours * 6, param.numReps);
+//        }
 
         expiredtaskcount = new int[param.numTaskTypes];
         completedtaskcount = new int[param.numTaskTypes];
@@ -124,11 +124,28 @@ public class Simulation {
             }
         }
 
-        for (Data each: dispatchoutput){
-            each.avgdata();
+
+        dispatchoutput.avgdata();
+        for (int y = 0; y < (int) parameters.numHours*6 ; y++){
+            double sum = 0;
+            for (int x = 0; x < parameters.numTaskTypes; x++) {
+                sum += dispatchoutput.avgget(x, y);
+            }
+            sum = Math.round(sum*10000)/10000.0;
+            dispatchoutput.avgset(parameters.numTaskTypes, y, sum);
         }
+
+
         for (Data each: operatoroutput){
             each.avgdata();
+            for (int y = 0; y < (int) parameters.numHours*6 ; y++){
+                double sum = 0;
+                for (int x = 0; x < parameters.numTaskTypes; x++) {
+                    sum += each.avgget(x, y);
+                }
+                sum = Math.round(sum*10000)/10000.0;
+                each.avgset(parameters.numTaskTypes, y, sum);
+            }
         }
     }
 

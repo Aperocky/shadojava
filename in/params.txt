@@ -1,4 +1,4 @@
-output_path		/Users/erinsong/Documents/shadojava/out
+output_path		/Users/aperocky/workspace/Labwork/shadojava/out/
 num_hours	    2
 traff_levels   	m h h h l l l m
 num_reps		1000

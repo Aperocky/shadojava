@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class ProcRep {
 
-    private Data[] dispatchdata;
+    private Data dispatchdata;
 
     private Data[] operatordata;
 
@@ -40,7 +40,7 @@ public class ProcRep {
 
     private double hours;
 
-    private Data[] repdisdata;
+    private Data repdisdata;
 
     private Data[] repopsdata;
 
@@ -63,7 +63,7 @@ public class ProcRep {
      *
      ****************************************************************************/
 
-    public ProcRep(Data[] dis, Data[] ops, Replication rep){
+    public ProcRep(Data dis, Data[] ops, Replication rep){
 
         this.rep = rep;
         dispatchdata = dis;
@@ -90,10 +90,10 @@ public class ProcRep {
 
     public void tmpData(){
 
-        repdisdata = new Data[numdispatch];
-        for (int i = 0; i < numdispatch; i++){
-            repdisdata[i] = new Data(numtasktypes,(int) hours*6, 1);
-        }
+        repdisdata = new Data(numtasktypes,(int) hours*6, numdispatch);
+//        for (int i = 0; i < numdispatch; i++){
+//            repdisdata[i] = new Data(numtasktypes,(int) hours*6, 1);
+//        }
 
         repopsdata = new Data[numoperator];
         for (int i = 0; i < numoperator; i++){
@@ -175,7 +175,7 @@ public class ProcRep {
         Operator[] dispatchers = rep.getDispatch().getDispatch();
 
         for (int i = 0; i < numdispatch; i++){
-            fillRepDataCell(dispatchers[i], repdisdata[i], 0);
+            fillRepDataCell(dispatchers[i], repdisdata, i);
         }
 
         for (TrainSim train: trains){
@@ -184,6 +184,8 @@ public class ProcRep {
                 fillRepDataCell(operators[i], repopsdata[i], i);
             }
         }
+
+        repdisdata.avgdata();
 
         for (Data each: repopsdata){
             each.avgdata();
@@ -203,12 +205,9 @@ public class ProcRep {
 
         // Process the dispatch data
 
-        for (int i = 0; i < numdispatch; i++){
-            Data processed = dispatchdata[i];
-            for (int x = 0; x < processed.data.length; x++){
-                for (int y = 0; y < processed.data[0].length; y++){
-                    processed.datainc(x, y, repID, repdisdata[i].dataget(x, y, 0));
-                }
+        for (int x = 0; x < numtasktypes; x++){
+            for (int y = 0; y < dispatchdata.data[0].length; y++){
+                dispatchdata.datainc(x, y, repID, repdisdata.avgget(x, y));
             }
         }
 
@@ -216,7 +215,7 @@ public class ProcRep {
 
         for (int i = 0; i < numoperator; i++){
             Data processed = operatordata[i];
-            for (int x = 0; x < processed.data.length; x++){
+            for (int x = 0; x < numtasktypes; x++){
                 for (int y = 0; y < processed.data[0].length; y++){
                     processed.datainc(x, y, repID, repopsdata[i].avgget(x, y));
                 }
@@ -234,11 +233,13 @@ public class ProcRep {
 
     public void testProcRep(){
 
-        for (Data each: repdisdata){
-            System.out.println(" FOR DISPATCHER \n");
-            each.avgdata();
-            each.outputdata();
-        }
+//        for (Data each: repdisdata){
+//            System.out.println(" FOR DISPATCHER \n");
+//            each.avgdata();
+//            each.outputdata();
+//        }
+
+        repdisdata.outputdata();
 
         for (Data each: repopsdata){
             System.out.println(" FOR OPERATOR \n");

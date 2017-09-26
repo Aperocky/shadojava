@@ -60,6 +60,8 @@ public class Data {
         data[i][j][k] += inc;
     }
 
+    public void avgset(int i, int j, double amount){ avg[i][j] = amount;}
+
     /****************************************************************************
      *
      *	Method:			avgdata
